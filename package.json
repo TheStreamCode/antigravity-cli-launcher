@@ -1,0 +1,130 @@
+{
+  "name": "vscode-antigravity-cli-launcher",
+  "displayName": "Antigravity CLI Launcher",
+  "description": "Unofficial VS Code extension that launches Antigravity CLI in a side terminal from the editor toolbar.",
+  "publisher": "mikesoft",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheStreamCode/antigravity-cli-launcher.git"
+  },
+  "author": {
+    "name": "Michael Gasperini",
+    "url": "https://mikesoft.it"
+  },
+  "bugs": {
+    "url": "https://github.com/TheStreamCode/antigravity-cli-launcher/issues"
+  },
+  "homepage": "https://mikesoft.it",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#0B0F19",
+    "theme": "dark"
+  },
+  "pricing": "Free",
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Launching Antigravity CLI runs terminal commands in the current workspace. The launcher is disabled until the workspace is trusted.",
+      "restrictedConfigurations": [
+        "antigravityCliLauncher.cliCommand"
+      ]
+    }
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "vscode",
+    "extension",
+    "antigravity",
+    "agy",
+    "cli",
+    "terminal",
+    "launcher",
+    "toolbar",
+    "ai",
+    "coding agent"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "antigravityCliLauncher.openCli",
+        "title": "Open Antigravity CLI in Side Terminal",
+        "category": "Antigravity CLI Launcher",
+        "icon": {
+          "light": "./media/launcher-mark.svg",
+          "dark": "./media/launcher-mark.svg"
+        }
+      },
+      {
+        "command": "antigravityCliLauncher.openSettings",
+        "title": "Open Settings",
+        "category": "Antigravity CLI Launcher"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "antigravityCliLauncher.openCli",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Antigravity CLI Launcher",
+      "properties": {
+        "antigravityCliLauncher.cliCommand": {
+          "type": "string",
+          "scope": "machine",
+          "default": "agy",
+          "markdownDescription": "Command used to start Antigravity CLI. The default is `agy`. On Windows, quote executable paths that contain spaces, for example `\"%LOCALAPPDATA%\\agy\\bin\\agy.exe\"`."
+        },
+        "antigravityCliLauncher.terminalName": {
+          "type": "string",
+          "scope": "window",
+          "default": "Antigravity",
+          "description": "Base name of the terminal used by the launcher."
+        },
+        "antigravityCliLauncher.autoInstall": {
+          "type": "boolean",
+          "scope": "machine",
+          "default": true,
+          "description": "Offer to install Antigravity CLI automatically when the default agy command is not found. Installation only starts after explicit confirmation."
+        },
+        "antigravityCliLauncher.preferAbsoluteInstalledPath": {
+          "type": "boolean",
+          "scope": "machine",
+          "default": true,
+          "description": "After a successful guided install, update the launcher command to the detected absolute agy executable path so VS Code can launch it even before restart."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "node ./node_modules/typescript/bin/tsc -p . --pretty false",
+    "watch": "node ./node_modules/typescript/bin/tsc --watch -p . --pretty false",
+    "test": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js && node ./test/integration/runTest.js",
+    "test:unit": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js",
+    "test:command-utils": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/command-utils.test.js",
+    "test:install-utils": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/install-utils.test.js",
+    "test:integration": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node ./test/integration/runTest.js",
+    "test:metadata": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/metadata.test.js",
+    "vscode:prepublish": "node ./node_modules/typescript/bin/tsc -p . --pretty false",
+    "package": "node ./node_modules/@vscode/vsce/vsce package",
+    "check": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js && node ./test/integration/runTest.js && node ./node_modules/@vscode/vsce/vsce ls",
+    "generate:icon": "node ./scripts/generate-icon.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.86.0",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.0.0"
+  }
+}
