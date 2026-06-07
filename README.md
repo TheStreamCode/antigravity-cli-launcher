@@ -180,6 +180,8 @@ The repository includes unit tests, metadata checks, VS Code integration smoke t
 
 Open a GitHub issue for bugs and feature requests. For support details, see `SUPPORT.md`.
 
+Financial support for the independent maintainer is available through GitHub Sponsors: [github.com/sponsors/TheStreamCode](https://github.com/sponsors/TheStreamCode).
+
 ## License
 
 Released under the MIT License. See `LICENSE` for details.
