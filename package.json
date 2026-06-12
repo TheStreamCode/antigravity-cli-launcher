@@ -1,9 +1,9 @@
 {
   "name": "vscode-antigravity-cli-launcher",
-  "displayName": "Antigravity CLI Launcher",
-  "description": "Unofficial VS Code extension that launches Antigravity CLI in a side terminal from the editor toolbar.",
+  "displayName": "Antigravity CLI Launcher — Run agy in a Side Terminal",
+  "description": "Launch the Antigravity (agy) AI coding agent in a side terminal from your editor toolbar — one click, fresh terminal, guided install. Unofficial; works in VS Code, Cursor & Windsurf on Windows, macOS & Linux.",
   "publisher": "mikesoft",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/TheStreamCode/antigravity-cli-launcher.git"
@@ -16,6 +16,9 @@
     "url": "https://github.com/TheStreamCode/antigravity-cli-launcher/issues"
   },
   "homepage": "https://mikesoft.it",
+  "sponsor": {
+    "url": "https://github.com/sponsors/TheStreamCode"
+  },
   "license": "MIT",
   "icon": "media/icon.png",
   "galleryBanner": {
@@ -36,19 +39,23 @@
     }
   },
   "categories": [
+    "AI",
+    "Chat",
     "Other"
   ],
   "keywords": [
-    "vscode",
-    "extension",
     "antigravity",
     "agy",
+    "antigravity cli",
+    "ai coding agent",
+    "coding agent",
+    "ai agent",
+    "ai",
     "cli",
     "terminal",
     "launcher",
-    "toolbar",
-    "ai",
-    "coding agent"
+    "gemini",
+    "vscode"
   ],
   "main": "./out/extension.js",
   "contributes": {
