@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Antigravity CLI Launcher"
+authors:
+  - family-names: Gasperini
+    given-names: Michael
+url: "https://github.com/TheStreamCode/antigravity-cli-launcher"
+version: "0.1.3"
+license: MIT
