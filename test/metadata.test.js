@@ -49,7 +49,7 @@ test('package metadata is public-ready and clearly unofficial', () => {
   assert.equal(packageJson.license, 'MIT');
   assert.equal(packageJson.repository.url, 'https://github.com/TheStreamCode/antigravity-cli-launcher.git');
   assert.equal(packageJson.bugs.url, 'https://github.com/TheStreamCode/antigravity-cli-launcher/issues');
-  assert.equal(packageJson.engines.vscode, '^1.93.0');
+  assert.equal(packageJson.engines.vscode, '^1.103.0');
   assert.deepEqual(packageJson.capabilities.untrustedWorkspaces.restrictedConfigurations, [
     'antigravityCliLauncher.cliCommand',
   ]);
@@ -148,7 +148,7 @@ test('ignore rules keep generated, local, and engineering-only files out of arti
   assert.ok(gitignoreEntries.includes('.vscode-test/'));
   assert.ok(gitignoreEntries.includes('.vsce/'));
   assert.ok(gitignoreEntries.includes('*.vsix'));
-  assert.ok(gitignoreEntries.includes('out/**/*.map'));
+  assert.ok(gitignoreEntries.includes('out/'));
   assert.ok(!gitignoreEntries.includes('package-lock.json'));
 
   assert.ok(vscodeignoreEntries.includes('src/**'));
