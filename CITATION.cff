@@ -5,5 +5,5 @@ authors:
   - family-names: Gasperini
     given-names: Michael
 url: "https://github.com/TheStreamCode/antigravity-cli-launcher"
-version: "0.1.3"
+version: "0.1.4"
 license: MIT
