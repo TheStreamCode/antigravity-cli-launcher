@@ -34,7 +34,7 @@ Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
 
 ## Requirements
 
-- VS Code `^1.93.0`
+- VS Code `^1.103.0`
 - Antigravity CLI available in the integrated terminal environment, or guided installation enabled
 
 ## Installation
