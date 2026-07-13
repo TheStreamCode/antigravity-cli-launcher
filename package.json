@@ -1,9 +1,9 @@
 {
   "name": "vscode-antigravity-cli-launcher",
   "displayName": "Antigravity CLI Launcher — Run agy in a Side Terminal",
-  "description": "Launch the Antigravity (agy) AI coding agent in a side terminal from your editor toolbar — one click, fresh terminal, guided install. Unofficial; works in VS Code, Cursor & Windsurf on Windows, macOS & Linux.",
+  "description": "Launch the Antigravity (agy) AI coding agent in a side terminal from your editor toolbar — one click, fresh terminal, official setup guidance. Unofficial; works in VS Code, Cursor & Windsurf on Windows, macOS & Linux.",
   "publisher": "mikesoft",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/TheStreamCode/antigravity-cli-launcher.git"
@@ -97,32 +97,20 @@
           "scope": "window",
           "default": "Antigravity",
           "description": "Base name of the terminal used by the launcher."
-        },
-        "antigravityCliLauncher.autoInstall": {
-          "type": "boolean",
-          "scope": "machine",
-          "default": true,
-          "description": "Offer to install Antigravity CLI automatically when the default agy command is not found. Installation only starts after explicit confirmation."
-        },
-        "antigravityCliLauncher.preferAbsoluteInstalledPath": {
-          "type": "boolean",
-          "scope": "machine",
-          "default": true,
-          "description": "After a successful guided install, update the launcher command to the detected absolute agy executable path so VS Code can launch it even before restart."
         }
       }
     }
   },
   "scripts": {
-    "compile": "node ./node_modules/typescript/bin/tsc -p . --pretty false",
+    "clean": "node ./node_modules/typescript/bin/tsc --build --clean tsconfig.json",
+    "compile": "npm run clean && node ./node_modules/typescript/bin/tsc -p . --pretty false",
     "watch": "node ./node_modules/typescript/bin/tsc --watch -p . --pretty false",
     "test": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js && node ./test/integration/runTest.js",
     "test:unit": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js",
     "test:command-utils": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/command-utils.test.js",
-    "test:install-utils": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/install-utils.test.js",
     "test:integration": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node ./test/integration/runTest.js",
     "test:metadata": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/metadata.test.js",
-    "vscode:prepublish": "node ./node_modules/typescript/bin/tsc -p . --pretty false",
+    "vscode:prepublish": "npm run compile",
     "package": "node ./node_modules/@vscode/vsce/vsce package",
     "check": "node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js && node ./test/integration/runTest.js && node ./node_modules/@vscode/vsce/vsce ls",
     "generate:icon": "node ./scripts/generate-icon.js"

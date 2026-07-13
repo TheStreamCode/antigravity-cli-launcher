@@ -11,7 +11,7 @@ Antigravity CLI Launcher is an unofficial VS Code extension that launches Antigr
 
 Works on Windows, macOS, and Linux.
 
-Current documented release: `0.1.5`. See `CHANGELOG.md` for release-by-release changes.
+Current documented release: `0.1.6`. See `CHANGELOG.md` for release-by-release changes.
 
 Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
 
@@ -26,16 +26,16 @@ Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
 - Opens a fresh side terminal beside the active editor on every launch
 - Uses the active editor workspace when available, with a fallback to the first open workspace folder
 - Runs the configurable Antigravity CLI command, defaulting to `agy`
-- Offers consent-based guided installation when the default `agy` command is missing
-- Adds the expected Antigravity binary directory to PATH during guided install where supported
-- Falls back to the absolute installed `agy` executable path after guided install when enabled
+- Detects when the default `agy` command is missing and offers the official installation guide
+- Opens installation guidance in the external browser without downloading or executing installer content
+- Never changes PATH or shell profile files
 - Supports quoted Windows executable paths
 - Does not collect telemetry, analytics, or personal data
 
 ## Requirements
 
 - VS Code `^1.103.0`
-- Antigravity CLI available in the integrated terminal environment, or guided installation enabled
+- Antigravity CLI installed by the user and available in the integrated terminal environment
 
 ## Installation
 
@@ -45,33 +45,13 @@ Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
 
 If Antigravity CLI is already installed and `agy` is on PATH, the launcher starts immediately.
 
-Manual Antigravity CLI installation uses the official Google installer:
+Install Antigravity CLI yourself by following the [official Google installation guide](https://antigravity.google/docs/cli/install). Review the instructions before running any command, then restart VS Code if new terminals do not recognize `agy`.
 
-```bash
-# macOS / Linux
-curl -fsSL https://antigravity.google/cli/install.sh | bash
-```
+## Installation Guidance
 
-```powershell
-# Windows PowerShell
-irm https://antigravity.google/cli/install.ps1 | iex
-```
+When the default `agy` command is missing, the extension explains that installation is user-directed and offers **Open Installation Guide**. This opens Google's authoritative Antigravity CLI installation page in the external browser.
 
-## Guided Installation
-
-When the launcher runs the default `agy` command and the integrated terminal reports that it is missing, the extension asks for explicit confirmation before installing anything.
-
-If you choose **Install**, the extension opens a visible install terminal and runs a generated local Node script. That script invokes the official Google installer and then configures the expected PATH location.
-
-Platform behavior:
-
-- Windows: runs the official PowerShell installer (`irm https://antigravity.google/cli/install.ps1 | iex`) and ensures `%LOCALAPPDATA%\agy\bin` is present in the Windows user PATH using the Windows user environment API.
-- macOS: runs the official installer (`curl -fsSL https://antigravity.google/cli/install.sh | bash`) through the active shell and ensures `$HOME/.local/bin` is present in the relevant shell startup files, including `.zshrc` and `.zprofile` for zsh.
-- Linux: runs the official installer through the active shell and ensures `$HOME/.local/bin` is present in the relevant shell startup file, such as `.bashrc`, `.zshrc`, `.profile`, or fish config.
-
-After a successful guided install, the extension can update `antigravityCliLauncher.cliCommand` to the detected absolute executable path. This makes the launcher work even before VS Code is restarted and before new terminals inherit the updated PATH.
-
-The guided install flow is enabled by default, but it never runs without explicit confirmation.
+For security and marketplace scanner compatibility, the extension does not download installer scripts, execute installation commands, create temporary installer files, change PATH, edit shell profiles, or rewrite the configured CLI command. Installation remains entirely under the user's control.
 
 ## How It Works
 
@@ -89,10 +69,8 @@ For safety, the launcher is disabled in untrusted workspaces. The executable com
 | --- | --- | --- |
 | `antigravityCliLauncher.cliCommand` | `agy` | Command executed when the launcher button is clicked. |
 | `antigravityCliLauncher.terminalName` | `Antigravity` | Base label used for created launch terminals. |
-| `antigravityCliLauncher.autoInstall` | `true` | Offer guided installation when the default `agy` command is missing. Installation still requires explicit confirmation. |
-| `antigravityCliLauncher.preferAbsoluteInstalledPath` | `true` | After guided install, update the launch command to the detected absolute `agy` executable path. |
 
-`antigravityCliLauncher.cliCommand`, `antigravityCliLauncher.autoInstall`, and `antigravityCliLauncher.preferAbsoluteInstalledPath` are machine-level settings. Configure them from your user or remote machine settings, not from repository workspace settings.
+`antigravityCliLauncher.cliCommand` is a machine-level setting. Configure it from your user or remote machine settings, not from repository workspace settings.
 
 Use the Command Palette to open the extension settings:
 
@@ -118,29 +96,11 @@ macOS or Linux absolute executable path:
 "antigravityCliLauncher.cliCommand": "\"/Users/you/.local/bin/agy\""
 ```
 
-Disable guided install prompts:
-
-```json
-"antigravityCliLauncher.autoInstall": false
-```
-
 ## Troubleshooting
 
 ### The terminal opens but `agy` is not recognized
 
-Install Antigravity CLI with the official Google installer:
-
-```bash
-# macOS / Linux
-curl -fsSL https://antigravity.google/cli/install.sh | bash
-```
-
-```powershell
-# Windows PowerShell
-irm https://antigravity.google/cli/install.ps1 | iex
-```
-
-If installation succeeds but existing terminals still do not see `agy`, restart VS Code so new terminal processes inherit the updated PATH.
+Follow the [official Google installation guide](https://antigravity.google/docs/cli/install), then restart VS Code so new terminal processes inherit any environment changes made during your user-directed setup.
 
 ### Windows PATH was updated but PowerShell still cannot find `agy`
 

@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## 0.1.6
+
+### Changed
+
+- Replaced guided installation with a link to the authoritative Google Antigravity CLI installation guide.
+- Removed obsolete automatic-install settings and documented user-directed installation.
+
+### Security
+
+- Removed all installer downloads, remote script execution, temporary installer generation, PATH updates, shell profile edits, and automatic launch-command rewrites for marketplace scanner compatibility.
+
 ## 0.1.5
 
 ### Changed

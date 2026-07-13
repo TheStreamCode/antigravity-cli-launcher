@@ -1,6 +1,3 @@
-import * as fs from 'node:fs';
-import * as os from 'node:os';
-import * as path from 'node:path';
 import * as vscode from 'vscode';
 import {
   FALLBACK_TERMINAL_NAME,
@@ -11,16 +8,9 @@ import {
   resolveTerminalCwd,
   shouldPromptToInstallAntigravity,
 } from './command-utils.js';
-import {
-  buildAntigravityInstallPromptCommand,
-  buildAntigravityInstallPromptMessage,
-  buildAntigravityInstallPromptScript,
-  buildQuotedCommandPath,
-  getDefaultAntigravityExecutablePath,
-} from './install-utils.js';
 
 const SETTINGS_NAMESPACE = 'antigravityCliLauncher';
-const DOCS_URL = 'https://github.com/google-antigravity/antigravity-cli';
+const INSTALL_DOCS_URL = 'https://antigravity.google/docs/cli/install';
 
 let terminalSequence = 1;
 
@@ -40,37 +30,12 @@ function collectShellExecutionOutput(execution: vscode.TerminalShellExecution): 
   })();
 }
 
-function writeAntigravityInstallPromptScript(): string {
-  const scriptPath = path.join(os.tmpdir(), `antigravity-cli-launcher-install-${process.pid}-${Date.now()}.js`);
-  fs.writeFileSync(scriptPath, buildAntigravityInstallPromptScript(), 'utf8');
-
-  return scriptPath;
-}
-
 async function openExtensionSettings(context: vscode.ExtensionContext): Promise<void> {
   await vscode.commands.executeCommand('workbench.action.openSettings', buildExtensionSettingsQuery(context.extension.id));
 }
 
 async function openAntigravityInstallInstructions(): Promise<void> {
-  await vscode.env.openExternal(vscode.Uri.parse(DOCS_URL));
-}
-
-async function updateCommandToInstalledPathIfAvailable(): Promise<void> {
-  const configuration = vscode.workspace.getConfiguration(SETTINGS_NAMESPACE);
-  if (!configuration.get<boolean>('preferAbsoluteInstalledPath', true)) {
-    return;
-  }
-
-  const executablePath = getDefaultAntigravityExecutablePath(process.platform, process.env, os.homedir());
-  if (!fs.existsSync(executablePath)) {
-    return;
-  }
-
-  const quotedPath = buildQuotedCommandPath(executablePath);
-  await configuration.update('cliCommand', quotedPath, vscode.ConfigurationTarget.Global);
-  void vscode.window.showInformationMessage(
-    `Antigravity CLI was installed. The launcher command now uses ${quotedPath}. Restart VS Code if existing terminals do not see the updated PATH.`,
-  );
+  await vscode.env.openExternal(vscode.Uri.parse(INSTALL_DOCS_URL));
 }
 
 function executeCommandWithOptionalShellIntegration(
@@ -143,57 +108,15 @@ function executeCommandWithOptionalShellIntegration(
   );
 }
 
-function startGuidedInstall(context: vscode.ExtensionContext): void {
-  const installTerminal = vscode.window.createTerminal({
-    name: 'Install Antigravity CLI',
-    location: vscode.TerminalLocation.Panel,
-  });
-  const installCommand = buildAntigravityInstallPromptCommand(writeAntigravityInstallPromptScript());
-
-  installTerminal.show();
-  executeCommandWithOptionalShellIntegration(
-    installTerminal,
-    installCommand,
-    context,
-    async (event) => {
-      if (event.exitCode === 0) {
-        await updateCommandToInstalledPathIfAvailable();
-      }
-    },
-  );
-}
-
 async function handleMissingAntigravity(context: vscode.ExtensionContext): Promise<void> {
-  const configuration = vscode.workspace.getConfiguration(SETTINGS_NAMESPACE);
-  const autoInstall = configuration.get<boolean>('autoInstall', true);
-
-  if (!autoInstall) {
-    const selection = await vscode.window.showWarningMessage(
-      `${buildAntigravityInstallPromptMessage()} Install it manually or enable guided install in settings.`,
-      'Open Settings',
-      'Open Antigravity Docs',
-    );
-
-    if (selection === 'Open Settings') {
-      await openExtensionSettings(context);
-    } else if (selection === 'Open Antigravity Docs') {
-      await openAntigravityInstallInstructions();
-    }
-
-    return;
-  }
-
   const selection = await vscode.window.showWarningMessage(
-    `${buildAntigravityInstallPromptMessage()} Install it now with the official Google installer?`,
+    'Antigravity CLI was not found. Install it by following the official Google instructions, then restart VS Code if agy is still unavailable. This extension does not download or run installers.',
     { modal: true },
-    'Install',
-    'Open Antigravity Docs',
+    'Open Installation Guide',
     'Open Settings',
   );
 
-  if (selection === 'Install') {
-    startGuidedInstall(context);
-  } else if (selection === 'Open Antigravity Docs') {
+  if (selection === 'Open Installation Guide') {
     await openAntigravityInstallInstructions();
   } else if (selection === 'Open Settings') {
     await openExtensionSettings(context);

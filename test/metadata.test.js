@@ -42,9 +42,9 @@ test('package metadata is public-ready and clearly unofficial', () => {
 
   assert.equal(packageJson.name, 'vscode-antigravity-cli-launcher');
   assert.equal(packageJson.displayName, 'Antigravity CLI Launcher — Run agy in a Side Terminal');
-  assert.equal(packageJson.description, 'Launch the Antigravity (agy) AI coding agent in a side terminal from your editor toolbar — one click, fresh terminal, guided install. Unofficial; works in VS Code, Cursor & Windsurf on Windows, macOS & Linux.');
+  assert.equal(packageJson.description, 'Launch the Antigravity (agy) AI coding agent in a side terminal from your editor toolbar — one click, fresh terminal, official setup guidance. Unofficial; works in VS Code, Cursor & Windsurf on Windows, macOS & Linux.');
   assert.equal(packageJson.publisher, 'mikesoft');
-  assert.equal(packageJson.version, '0.1.4');
+  assert.equal(packageJson.version, '0.1.6');
   assert.equal(packageJson.icon, 'media/icon.png');
   assert.equal(packageJson.license, 'MIT');
   assert.equal(packageJson.repository.url, 'https://github.com/TheStreamCode/antigravity-cli-launcher.git');
@@ -57,7 +57,7 @@ test('package metadata is public-ready and clearly unofficial', () => {
   assert.ok(packageJson.keywords.includes('coding agent'));
 });
 
-test('package contributes launcher commands, toolbar item, and safe install settings', () => {
+test('package contributes launcher commands, toolbar item, and machine-scoped command configuration', () => {
   const packageJson = readPackageJson();
   const [openCliCommand, openSettingsCommand] = packageJson.contributes.commands;
 
@@ -76,11 +76,8 @@ test('package contributes launcher commands, toolbar item, and safe install sett
   assert.equal(settings['antigravityCliLauncher.cliCommand'].default, 'agy');
   assert.equal(settings['antigravityCliLauncher.cliCommand'].scope, 'machine');
   assert.equal(settings['antigravityCliLauncher.terminalName'].default, 'Antigravity');
-  assert.equal(settings['antigravityCliLauncher.autoInstall'].default, true);
-  assert.equal(settings['antigravityCliLauncher.autoInstall'].scope, 'machine');
-  assert.equal(settings['antigravityCliLauncher.preferAbsoluteInstalledPath'].default, true);
-  assert.equal(settings['antigravityCliLauncher.preferAbsoluteInstalledPath'].scope, 'machine');
-  assert.match(settings['antigravityCliLauncher.autoInstall'].description, /explicit confirmation/i);
+  assert.equal(settings['antigravityCliLauncher.autoInstall'], undefined);
+  assert.equal(settings['antigravityCliLauncher.preferAbsoluteInstalledPath'], undefined);
 });
 
 test('extension assets are original packaged assets on expected paths', () => {
@@ -94,7 +91,7 @@ test('extension assets are original packaged assets on expected paths', () => {
   assert.doesNotMatch(commandIconMarkup, /google|gemini/i);
 });
 
-test('README covers setup, auto install, PATH behavior, privacy, and affiliation disclaimer', () => {
+test('README covers user-directed setup, security behavior, privacy, and affiliation disclaimer', () => {
   const readme = readText('README.md');
 
   assert.match(readme, /^# Antigravity CLI Launcher$/m);
@@ -104,13 +101,13 @@ test('README covers setup, auto install, PATH behavior, privacy, and affiliation
   assert.match(readme, /not affiliated with, endorsed by, sponsored by, or approved by Google/i);
   assert.match(readme, /Antigravity, agy, Google, and related names/i);
   assert.match(readme, /## Features/);
-  assert.match(readme, /## Guided Installation/);
-  assert.match(readme, /official Google installer/);
-  assert.match(readme, /curl -fsSL https:\/\/antigravity\.google\/cli\/install\.sh \| bash/);
-  assert.match(readme, /irm https:\/\/antigravity\.google\/cli\/install\.ps1 \| iex/);
+  assert.match(readme, /## Installation Guidance/);
+  assert.match(readme, /https:\/\/antigravity\.google\/docs\/cli\/install/);
+  assert.match(readme, /does not download installer scripts/i);
+  assert.match(readme, /marketplace scanner compatibility/i);
   assert.match(readme, /%LOCALAPPDATA%\\agy\\bin/);
   assert.match(readme, /\.local\/bin/);
-  assert.match(readme, /explicit confirmation/i);
+  assert.match(readme, /entirely under the user's control/i);
   assert.match(readme, /does not collect telemetry, analytics, or personal data/i);
   assert.match(readme, /npm run check/);
 });
@@ -127,14 +124,22 @@ test('legal and support documents are present and do not overclaim affiliation',
   assert.match(support, /GitHub Issues/);
   assert.match(support, /info@mikesoft\.it/);
   assert.match(security, /Please do not report security vulnerabilities through public GitHub issues/i);
+  assert.match(security, /does not download or execute installer content/i);
   assert.match(license, /MIT License/);
   assert.match(contributing, /Do not add official Google or Antigravity logos/i);
+});
+
+test('citation metadata matches the package version', () => {
+  const citation = readText('CITATION.cff');
+
+  assert.match(citation, /^version: "0\.1\.6"$/m);
 });
 
 test('package scripts use deterministic local tooling entry points', () => {
   const packageJson = readPackageJson();
 
-  assert.equal(packageJson.scripts.compile, 'node ./node_modules/typescript/bin/tsc -p . --pretty false');
+  assert.equal(packageJson.scripts.clean, 'node ./node_modules/typescript/bin/tsc --build --clean tsconfig.json');
+  assert.equal(packageJson.scripts.compile, 'npm run clean && node ./node_modules/typescript/bin/tsc -p . --pretty false');
   assert.equal(packageJson.scripts.test, 'node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js && node ./test/integration/runTest.js');
   assert.equal(packageJson.scripts.check, 'node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js && node ./test/integration/runTest.js && node ./node_modules/@vscode/vsce/vsce ls');
   assert.equal(packageJson.scripts.package, 'node ./node_modules/@vscode/vsce/vsce package');
