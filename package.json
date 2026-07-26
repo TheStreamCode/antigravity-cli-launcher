@@ -116,7 +116,7 @@
     "generate:icon": "node ./scripts/generate-icon.js"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@types/node": "^26.1.1",
     "@types/vscode": "^1.103.0",
     "@vscode/test-electron": "^3.0.0",
     "@vscode/vsce": "^3.9.2",
