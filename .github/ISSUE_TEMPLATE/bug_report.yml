@@ -1,0 +1,73 @@
+name: Bug report
+description: Report a reproducible problem with the extension
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve Antigravity CLI Launcher. Remove secrets and tokens from all output.
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension version
+      placeholder: 0.1.7
+    validations:
+      required: true
+  - type: input
+    id: vscode-version
+    attributes:
+      label: Editor and version
+      description: Include whether you use VS Code, Cursor, Windsurf, or another compatible editor.
+      placeholder: VS Code 1.103.0
+    validations:
+      required: true
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system
+      placeholder: Windows 11 24H2, macOS 15, or Ubuntu 24.04
+    validations:
+      required: true
+  - type: input
+    id: agy-version
+    attributes:
+      label: Antigravity CLI version
+      description: Include the output of `agy --version` when available.
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reliable reproduction.
+      placeholder: |
+        1. Configure ...
+        2. Click ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and sanitized output
+      render: shell
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: The configured command works in a regular integrated terminal.
+          required: true
+        - label: I removed secrets, tokens, and personal data from this report.
+          required: true
+        - label: I searched existing issues for the same problem.
+          required: true

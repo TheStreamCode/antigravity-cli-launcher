@@ -5,6 +5,7 @@ scripts/**
 node_modules/**
 .git/**
 .gitignore
+.editorconfig
 AGENTS.md
 .github/**
 .vscode/**

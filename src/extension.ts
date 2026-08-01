@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import {
   FALLBACK_TERMINAL_NAME,
+  appendBoundedOutput,
   buildExtensionSettingsQuery,
   buildTerminalName,
   normalizeTerminalName,
@@ -14,20 +15,18 @@ const INSTALL_DOCS_URL = 'https://antigravity.google/docs/cli/install';
 
 let terminalSequence = 1;
 
-function collectShellExecutionOutput(execution: vscode.TerminalShellExecution): Promise<string> {
-  return (async () => {
-    let output = '';
+async function collectShellExecutionOutput(execution: vscode.TerminalShellExecution): Promise<string> {
+  let output = '';
 
-    try {
-      for await (const chunk of execution.read()) {
-        output += chunk;
-      }
-    } catch {
-      return output;
+  try {
+    for await (const chunk of execution.read()) {
+      output = appendBoundedOutput(output, chunk);
     }
-
+  } catch {
     return output;
-  })();
+  }
+
+  return output;
 }
 
 async function openExtensionSettings(context: vscode.ExtensionContext): Promise<void> {
@@ -60,14 +59,14 @@ function executeCommandWithOptionalShellIntegration(
 
     const executionListener = onShellExecutionEnd
       ? vscode.window.onDidEndTerminalShellExecution(async (endEvent) => {
-      if (endEvent.terminal !== terminal || (execution && endEvent.execution !== execution)) {
-        return;
-      }
+        if (endEvent.terminal !== terminal || (execution && endEvent.execution !== execution)) {
+          return;
+        }
 
-      executionListener?.dispose();
-      const output = outputPromise ? await outputPromise : '';
-      await onShellExecutionEnd(endEvent, output);
-    })
+        executionListener?.dispose();
+        const output = outputPromise ? await outputPromise : '';
+        await onShellExecutionEnd(endEvent, output);
+      })
       : undefined;
 
     if (executionListener) {

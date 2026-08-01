@@ -11,7 +11,7 @@ Antigravity CLI Launcher is an unofficial VS Code extension that launches Antigr
 
 Works on Windows, macOS, and Linux.
 
-Current documented release: `0.1.6`. See `CHANGELOG.md` for release-by-release changes.
+Current documented release: `0.1.7`. See `CHANGELOG.md` for release-by-release changes.
 
 Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
 
@@ -34,7 +34,7 @@ Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
 
 ## Requirements
 
-- VS Code `^1.103.0`
+- VS Code 1.103.0 or newer
 - Antigravity CLI installed by the user and available in the integrated terminal environment
 
 ## Installation
@@ -135,15 +135,15 @@ See `TRADEMARKS.md` for the full affiliation and trademark notice.
 Local verification and packaging:
 
 ```bash
-npm install
+npm ci
 npm run check
-npm run test:integration
+npm run audit
 npm run package
 ```
 
 `npm run package` creates the `.vsix` file in the workspace root.
 
-The repository includes unit tests, metadata checks, VS Code integration smoke tests, and CI coverage for Windows and Linux.
+The repository includes unit tests, metadata and security checks, a VS Code Extension Host smoke test, dependency auditing, and CI coverage for Windows, macOS, and Linux.
 
 ## Support
 

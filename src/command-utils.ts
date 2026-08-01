@@ -1,5 +1,6 @@
 const FALLBACK_CLI_COMMAND = 'agy';
 const FALLBACK_TERMINAL_NAME = 'Antigravity';
+const MAX_CAPTURED_OUTPUT_LENGTH = 64 * 1024;
 
 type WorkspaceFolderLike<T> = { uri: T };
 type WorkspaceLike<T> = {
@@ -44,6 +45,23 @@ function buildCommandNotFoundPatterns(command: string): RegExp[] {
     new RegExp(`\\b${escapedName}\\b.*cannot find the file`, 'i'),
     new RegExp(`no such file or directory:\\s*${escapedName}(?:\\s|$)`, 'i'),
   ];
+}
+
+/** Keeps only the most recent terminal output so long-running sessions cannot grow memory without bound. */
+export function appendBoundedOutput(
+  current: string,
+  chunk: string,
+  maxLength = MAX_CAPTURED_OUTPUT_LENGTH,
+): string {
+  if (maxLength <= 0) {
+    return '';
+  }
+
+  if (chunk.length >= maxLength) {
+    return chunk.slice(-maxLength);
+  }
+
+  return `${current.slice(-(maxLength - chunk.length))}${chunk}`;
 }
 
 /** Returns a trimmed CLI command with a safe fallback. */
@@ -128,4 +146,4 @@ export function resolveTerminalCwd<T>(
   return activeWorkspaceFolder?.uri ?? workspace.workspaceFolders?.[0]?.uri;
 }
 
-export { FALLBACK_CLI_COMMAND, FALLBACK_TERMINAL_NAME };
+export { FALLBACK_CLI_COMMAND, FALLBACK_TERMINAL_NAME, MAX_CAPTURED_OUTPUT_LENGTH };

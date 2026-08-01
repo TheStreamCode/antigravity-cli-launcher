@@ -4,10 +4,19 @@ Thank you for considering a contribution to Antigravity CLI Launcher.
 
 ## Development Setup
 
+Prerequisites:
+
+- Node.js 22 or newer
+- npm
+- Git
+
 ```bash
-npm install
+npm ci
 npm run check
+npm run audit
 ```
+
+Use `npm run test:unit` for the fast unit and metadata suite, and `npm run test:integration` for the VS Code Extension Host smoke test. `npm run check` compiles the extension, runs both suites, and inspects the VSIX file list.
 
 ## Project Rules
 
@@ -17,6 +26,8 @@ npm run check
 - Do not add telemetry, analytics, or personal data collection without explicit documentation and a reviewed privacy rationale.
 - Keep helper logic in testable modules when possible.
 - Add or update tests for behavior changes.
+- Keep `@types/vscode` pinned to the minimum version declared in `engines.vscode` so newer APIs are not used accidentally.
+- Keep GitHub Actions pinned to full commit SHAs and grant only the permissions each workflow needs.
 
 ## Pull Requests
 
@@ -27,3 +38,5 @@ npm run check
 ```
 
 Include a concise description, user-visible behavior changes, and relevant verification output.
+
+Do not commit generated `out/`, `.vscode-test/`, `node_modules/`, or `.vsix` artifacts.

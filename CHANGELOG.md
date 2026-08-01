@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## 0.1.7
+
+### Changed
+
+- Bounded terminal shell-output capture to prevent long-running Antigravity sessions from growing extension memory without limit.
+- Losslessly reduced the toolbar SVG size while preserving pixel-identical rendering and leaving the Marketplace icon unchanged.
+- Removed a stale icon generator that did not reproduce the tracked Marketplace artwork.
+- Added macOS CI coverage, workflow concurrency controls, timeouts, immutable action pins, stricter TypeScript checks, and repository-wide editor settings.
+- Replaced legacy issue templates with validated GitHub issue forms and expanded contribution and pull-request guidance.
+- Pinned VS Code API types to the declared compatibility floor and refreshed Node/test dependencies.
+
+### Security
+
+- Resolved the high-severity `brace-expansion` development dependency advisory.
+- Added a dependency-audit command and CI gate, private vulnerability reporting guidance, and least-privilege workflow hardening.
+- Removed the dormant Dependabot auto-merge workflow after version-update PRs were intentionally disabled.
+
 ## 0.1.6
 
 ### Changed

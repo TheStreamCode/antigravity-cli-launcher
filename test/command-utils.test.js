@@ -4,6 +4,8 @@ const assert = require('node:assert/strict');
 const {
   FALLBACK_CLI_COMMAND,
   FALLBACK_TERMINAL_NAME,
+  MAX_CAPTURED_OUTPUT_LENGTH,
+  appendBoundedOutput,
   buildExtensionSettingsQuery,
   buildTerminalName,
   extractExecutable,
@@ -13,6 +15,19 @@ const {
   resolveTerminalCwd,
   shouldPromptToInstallAntigravity,
 } = require('../out/command-utils.js');
+
+test('terminal output capture keeps a bounded tail for long-running sessions', () => {
+  const firstChunk = 'a'.repeat(MAX_CAPTURED_OUTPUT_LENGTH);
+  const result = appendBoundedOutput(firstChunk, 'command not found: agy');
+
+  assert.equal(result.length, MAX_CAPTURED_OUTPUT_LENGTH);
+  assert.equal(result.endsWith('command not found: agy'), true);
+});
+
+test('terminal output capture handles oversized chunks and disabled capture limits', () => {
+  assert.equal(appendBoundedOutput('old', '0123456789', 4), '6789');
+  assert.equal(appendBoundedOutput('old', 'new', 0), '');
+});
 
 test('default command and terminal name match Antigravity branding', () => {
   assert.equal(FALLBACK_CLI_COMMAND, 'agy');

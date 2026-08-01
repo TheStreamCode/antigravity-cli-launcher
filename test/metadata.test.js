@@ -44,12 +44,15 @@ test('package metadata is public-ready and clearly unofficial', () => {
   assert.equal(packageJson.displayName, 'Antigravity CLI Launcher — Run agy in a Side Terminal');
   assert.equal(packageJson.description, 'Launch the Antigravity (agy) AI coding agent in a side terminal from your editor toolbar — one click, fresh terminal, official setup guidance. Unofficial; works in VS Code, Cursor & Windsurf on Windows, macOS & Linux.');
   assert.equal(packageJson.publisher, 'mikesoft');
-  assert.equal(packageJson.version, '0.1.6');
+  assert.equal(packageJson.version, '0.1.7');
+  assert.equal(packageJson.private, true);
   assert.equal(packageJson.icon, 'media/icon.png');
   assert.equal(packageJson.license, 'MIT');
   assert.equal(packageJson.repository.url, 'https://github.com/TheStreamCode/antigravity-cli-launcher.git');
   assert.equal(packageJson.bugs.url, 'https://github.com/TheStreamCode/antigravity-cli-launcher/issues');
   assert.equal(packageJson.engines.vscode, '^1.103.0');
+  assert.equal(packageJson.engines.node, '>=22');
+  assert.equal(packageJson.devDependencies['@types/vscode'], '1.103.0');
   assert.deepEqual(packageJson.capabilities.untrustedWorkspaces.restrictedConfigurations, [
     'antigravityCliLauncher.cliCommand',
   ]);
@@ -84,10 +87,13 @@ test('extension assets are original packaged assets on expected paths', () => {
   const marketplaceIcon = readPngSize('media/icon.png');
   const commandIcon = readText('media/launcher-mark.svg');
   const commandIconMarkup = stripEmbeddedImagePayloads(commandIcon);
+  const commandIconBytes = fs.statSync(path.join(rootDir, 'media/launcher-mark.svg')).size;
 
   assert.equal(marketplaceIcon.width, 256);
   assert.equal(marketplaceIcon.height, 256);
+  assert.ok(commandIconBytes <= 2_140_000, `Expected toolbar icon to stay within its optimized size budget, got ${commandIconBytes} bytes`);
   assert.match(commandIcon, /<svg/i);
+  assert.equal((commandIcon.match(/data:image\/png;base64,/gi) ?? []).length, 2);
   assert.doesNotMatch(commandIconMarkup, /google|gemini/i);
 });
 
@@ -97,7 +103,7 @@ test('README covers user-directed setup, security behavior, privacy, and affilia
   assert.match(readme, /^# Antigravity CLI Launcher$/m);
   assert.match(readme, /unofficial VS Code extension/i);
   assert.match(readme, /https:\/\/github\.com\/TheStreamCode\/antigravity-cli-launcher/);
-  assert.match(readme, /VS Code `\^1\.103\.0`/);
+  assert.match(readme, /VS Code 1\.103\.0 or newer/);
   assert.match(readme, /not affiliated with, endorsed by, sponsored by, or approved by Google/i);
   assert.match(readme, /Antigravity, agy, Google, and related names/i);
   assert.match(readme, /## Features/);
@@ -132,7 +138,7 @@ test('legal and support documents are present and do not overclaim affiliation',
 test('citation metadata matches the package version', () => {
   const citation = readText('CITATION.cff');
 
-  assert.match(citation, /^version: "0\.1\.6"$/m);
+  assert.match(citation, /^version: "0\.1\.7"$/m);
 });
 
 test('package scripts use deterministic local tooling entry points', () => {
@@ -143,6 +149,8 @@ test('package scripts use deterministic local tooling entry points', () => {
   assert.equal(packageJson.scripts.test, 'node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js && node ./test/integration/runTest.js');
   assert.equal(packageJson.scripts.check, 'node ./node_modules/typescript/bin/tsc -p . --pretty false && node --test test/*.test.js && node ./test/integration/runTest.js && node ./node_modules/@vscode/vsce/vsce ls');
   assert.equal(packageJson.scripts.package, 'node ./node_modules/@vscode/vsce/vsce package');
+  assert.equal(packageJson.scripts.audit, 'npm audit --audit-level=high');
+  assert.equal(packageJson.scripts['generate:icon'], undefined);
 });
 
 test('ignore rules keep generated, local, and engineering-only files out of artifacts', () => {
@@ -161,19 +169,35 @@ test('ignore rules keep generated, local, and engineering-only files out of arti
   assert.ok(vscodeignoreEntries.includes('docs/**'));
   assert.ok(vscodeignoreEntries.includes('scripts/**'));
   assert.ok(vscodeignoreEntries.includes('.github/**'));
+  assert.ok(vscodeignoreEntries.includes('.editorconfig'));
   assert.ok(vscodeignoreEntries.includes('out/**/*.map'));
   assert.ok(vscodeignoreEntries.includes('package-lock.json'));
 });
 
-test('CI validates the extension with npm on Windows and Linux', () => {
+test('CI validates the extension with npm on Windows, macOS, and Linux', () => {
   const workflow = readText('.github/workflows/ci.yml');
+  const actionReferences = [...workflow.matchAll(/uses:\s+[^@\s]+@([^\s]+)/g)].map((match) => match[1]);
 
   assert.match(workflow, /^name: CI$/m);
   assert.match(workflow, /windows-latest/);
   assert.match(workflow, /ubuntu-latest/);
+  assert.match(workflow, /macos-latest/);
   assert.match(workflow, /cache: npm/);
   assert.match(workflow, /npm ci/);
+  assert.match(workflow, /npm run audit/);
   assert.match(workflow, /npm run check/);
+  assert.match(workflow, /cancel-in-progress: true/);
+  assert.ok(actionReferences.length > 0);
+  assert.ok(actionReferences.every((reference) => /^[0-9a-f]{40}$/.test(reference)));
+});
+
+test('repository editor settings enforce portable text files', () => {
+  const editorConfig = readText('.editorconfig');
+
+  assert.match(editorConfig, /^root = true$/m);
+  assert.match(editorConfig, /^end_of_line = lf$/m);
+  assert.match(editorConfig, /^insert_final_newline = true$/m);
+  assert.match(editorConfig, /^trim_trailing_whitespace = true$/m);
 });
 
 test('changelog documents the initial release scope', () => {
