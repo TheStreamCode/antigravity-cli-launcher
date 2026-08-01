@@ -11,7 +11,7 @@ Antigravity CLI Launcher is an unofficial VS Code extension that launches Antigr
 
 Works on Windows, macOS, and Linux.
 
-Current documented release: `0.1.7`. See `CHANGELOG.md` for release-by-release changes.
+Current documented release: `0.1.8`. See `CHANGELOG.md` for release-by-release changes.
 
 Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
 

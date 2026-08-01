@@ -44,7 +44,7 @@ test('package metadata is public-ready and clearly unofficial', () => {
   assert.equal(packageJson.displayName, 'Antigravity CLI Launcher — Run agy in a Side Terminal');
   assert.equal(packageJson.description, 'Launch the Antigravity (agy) AI coding agent in a side terminal from your editor toolbar — one click, fresh terminal, official setup guidance. Unofficial; works in VS Code, Cursor & Windsurf on Windows, macOS & Linux.');
   assert.equal(packageJson.publisher, 'mikesoft');
-  assert.equal(packageJson.version, '0.1.7');
+  assert.equal(packageJson.version, '0.1.8');
   assert.equal(packageJson.private, true);
   assert.equal(packageJson.icon, 'media/icon.png');
   assert.equal(packageJson.license, 'MIT');
@@ -138,7 +138,7 @@ test('legal and support documents are present and do not overclaim affiliation',
 test('citation metadata matches the package version', () => {
   const citation = readText('CITATION.cff');
 
-  assert.match(citation, /^version: "0\.1\.7"$/m);
+  assert.match(citation, /^version: "0\.1\.8"$/m);
 });
 
 test('package scripts use deterministic local tooling entry points', () => {
@@ -151,6 +151,15 @@ test('package scripts use deterministic local tooling entry points', () => {
   assert.equal(packageJson.scripts.package, 'node ./node_modules/@vscode/vsce/vsce package');
   assert.equal(packageJson.scripts.audit, 'npm audit --audit-level=high');
   assert.equal(packageJson.scripts['generate:icon'], undefined);
+});
+
+test('integration tests use isolated short-lived VS Code runtime paths', () => {
+  const integrationRunner = readText('test/integration/runTest.js');
+
+  assert.match(integrationRunner, /fs\.mkdtempSync\(path\.join\(os\.tmpdir\(\), 'agy-vscode-'\)\)/);
+  assert.match(integrationRunner, /--user-data-dir=/);
+  assert.match(integrationRunner, /--extensions-dir=/);
+  assert.match(integrationRunner, /fs\.rmSync\(testRuntimePath, \{ recursive: true, force: true \}\)/);
 });
 
 test('ignore rules keep generated, local, and engineering-only files out of artifacts', () => {

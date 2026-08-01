@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## 0.1.8
+
+### Fixed
+
+- Isolated VS Code integration-test user data and extensions in short-lived temporary directories, avoiding the macOS Unix-domain socket path limit in CI.
+
 ## 0.1.7
 
 ### Changed
