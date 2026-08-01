@@ -39,6 +39,15 @@ async function run() {
     const terminal = await waitForNewTerminal(beforeCount);
 
     assert.match(terminal.name, /^Antigravity Test/);
+
+    const beforeSecondCount = vscode.window.terminals.length;
+    await vscode.commands.executeCommand('antigravityCliLauncher.openCli');
+    const secondTerminal = await waitForNewTerminal(beforeSecondCount);
+
+    assert.notEqual(secondTerminal, terminal);
+    assert.match(secondTerminal.name, /^Antigravity Test \d+$/);
+
+    secondTerminal.dispose();
     terminal.dispose();
 
     await vscode.commands.executeCommand('antigravityCliLauncher.openSettings');

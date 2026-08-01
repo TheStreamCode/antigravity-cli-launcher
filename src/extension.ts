@@ -15,6 +15,13 @@ const INSTALL_DOCS_URL = 'https://antigravity.google/docs/cli/install';
 
 let terminalSequence = 1;
 
+/**
+ * Teardown callbacks for launches that still have live listeners. Entries remove
+ * themselves once their launch finishes, so repeated launches in a long-running
+ * window cannot accumulate listeners.
+ */
+const pendingLaunchTeardowns = new Set<() => void>();
+
 async function collectShellExecutionOutput(execution: vscode.TerminalShellExecution): Promise<string> {
   let output = '';
 
@@ -40,13 +47,28 @@ async function openAntigravityInstallInstructions(): Promise<void> {
 function executeCommandWithOptionalShellIntegration(
   terminal: vscode.Terminal,
   command: string,
-  context: vscode.ExtensionContext,
   onShellExecutionEnd?: (event: vscode.TerminalShellExecutionEndEvent, output: string) => void | Promise<void>,
 ): void {
+  const launchDisposables: vscode.Disposable[] = [];
   let executionStarted = false;
+  let isTornDown = false;
+
+  const tearDown = () => {
+    if (isTornDown) {
+      return;
+    }
+
+    isTornDown = true;
+    clearTimeout(fallbackHandle);
+    pendingLaunchTeardowns.delete(tearDown);
+
+    for (const disposable of launchDisposables.splice(0)) {
+      disposable.dispose();
+    }
+  };
 
   const startExecution = (shellIntegration: vscode.TerminalShellIntegration) => {
-    if (executionStarted) {
+    if (executionStarted || isTornDown) {
       return;
     }
 
@@ -57,20 +79,16 @@ function executeCommandWithOptionalShellIntegration(
     let execution: vscode.TerminalShellExecution | undefined;
     let outputPromise: Promise<string> | undefined;
 
-    const executionListener = onShellExecutionEnd
-      ? vscode.window.onDidEndTerminalShellExecution(async (endEvent) => {
+    if (onShellExecutionEnd) {
+      launchDisposables.push(vscode.window.onDidEndTerminalShellExecution(async (endEvent) => {
         if (endEvent.terminal !== terminal || (execution && endEvent.execution !== execution)) {
           return;
         }
 
-        executionListener?.dispose();
+        tearDown();
         const output = outputPromise ? await outputPromise : '';
         await onShellExecutionEnd(endEvent, output);
-      })
-      : undefined;
-
-    if (executionListener) {
-      context.subscriptions.push(executionListener);
+      }));
     }
 
     execution = shellIntegration.executeCommand(command);
@@ -85,6 +103,12 @@ function executeCommandWithOptionalShellIntegration(
     startExecution(event.shellIntegration);
   });
 
+  const closedTerminalListener = vscode.window.onDidCloseTerminal((closedTerminal) => {
+    if (closedTerminal === terminal) {
+      tearDown();
+    }
+  });
+
   const fallbackHandle = setTimeout(() => {
     if (terminal.shellIntegration) {
       startExecution(terminal.shellIntegration);
@@ -92,19 +116,16 @@ function executeCommandWithOptionalShellIntegration(
     }
 
     executionStarted = true;
-    shellIntegrationListener.dispose();
+    tearDown();
     terminal.sendText(command, true);
   }, 3000);
 
+  launchDisposables.push(shellIntegrationListener, closedTerminalListener);
+  pendingLaunchTeardowns.add(tearDown);
+
   if (terminal.shellIntegration) {
     startExecution(terminal.shellIntegration);
-    return;
   }
-
-  context.subscriptions.push(
-    shellIntegrationListener,
-    { dispose: () => clearTimeout(fallbackHandle) },
-  );
 }
 
 async function handleMissingAntigravity(context: vscode.ExtensionContext): Promise<void> {
@@ -126,7 +147,6 @@ function watchForMissingAntigravity(terminal: vscode.Terminal, cliCommand: strin
   executeCommandWithOptionalShellIntegration(
     terminal,
     cliCommand,
-    context,
     async (endEvent, output) => {
       if (shouldPromptToInstallAntigravity(cliCommand, endEvent.exitCode, output)) {
         await handleMissingAntigravity(context);
@@ -181,8 +201,21 @@ export function activate(context: vscode.ExtensionContext): void {
     await openExtensionSettings(context);
   });
 
-  context.subscriptions.push(openCliCommand, openSettingsCommand);
+  context.subscriptions.push(
+    openCliCommand,
+    openSettingsCommand,
+    {
+      dispose: () => {
+        for (const runTeardown of [...pendingLaunchTeardowns]) {
+          runTeardown();
+        }
+      },
+    },
+  );
 }
 
 export function deactivate(): void {
+  for (const runTeardown of [...pendingLaunchTeardowns]) {
+    runTeardown();
+  }
 }

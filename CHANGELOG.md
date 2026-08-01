@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## 0.1.9 - 2026-08-01
+
+### Fixed
+
+- Launch listeners are now released as soon as a launch finishes or its terminal is closed, instead of staying registered for the lifetime of the window. Repeated launches no longer accumulate terminal shell-integration and shell-execution subscriptions.
+
+### Changed
+
+- Extended the VS Code Extension Host smoke test to cover a second launch, verifying that each click opens a distinct terminal with the expected sequence suffix.
+- Documented the repository layout, the individual verification scripts, and `F5` debugging in `README.md` and `CONTRIBUTING.md`.
+
+### Added
+
+- `.vscode/launch.json` and `.vscode/tasks.json` with **Run Extension** and **Extension Tests** debug configurations backed by the `npm: watch` build task. Both are excluded from the published VSIX.
+- `.gitignore` entry for the local `.antigravitycli/` state directory created by Antigravity CLI in a workspace.
+
+### Security
+
+- `npm audit --audit-level=high` reports no vulnerabilities. `@types/node` and `@types/vscode` remain pinned to the declared Node and VS Code compatibility floors, so no dependency updates were applied.
+
 ## 0.1.8
 
 ### Fixed

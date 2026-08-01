@@ -3,6 +3,7 @@ out/
 coverage/
 .vscode-test/
 .vsce/
+.antigravitycli/
 *.vsix
 *.log
 npm-debug.log*

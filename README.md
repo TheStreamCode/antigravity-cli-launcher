@@ -11,7 +11,7 @@ Antigravity CLI Launcher is an unofficial VS Code extension that launches Antigr
 
 Works on Windows, macOS, and Linux.
 
-Current documented release: `0.1.8`. See `CHANGELOG.md` for release-by-release changes.
+Current documented release: `0.1.9`. See `CHANGELOG.md` for release-by-release changes.
 
 Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
 
@@ -130,7 +130,21 @@ This repository contains only the extension code and original launcher assets. I
 
 See `TRADEMARKS.md` for the full affiliation and trademark notice.
 
+## Repository Structure
+
+| Path | Purpose |
+| --- | --- |
+| `src/extension.ts` | Activation, commands, terminal lifecycle, and prompts. |
+| `src/command-utils.ts` | Editor-independent helpers: command parsing, configuration resolution, bounded output capture, missing-command detection. |
+| `test/*.test.js` | Unit, security, and repository-metadata tests. |
+| `test/integration/` | VS Code Extension Host smoke test and its runner. |
+| `media/` | Marketplace icon and editor-title launcher mark. |
+| `.github/workflows/ci.yml` | Windows, Linux, and macOS validation matrix. |
+| `out/` | Compiled JavaScript (generated, not tracked). |
+
 ## Development
+
+Requirements: Node.js 22 or newer and npm. The repository uses npm with the committed `package-lock.json`.
 
 Local verification and packaging:
 
@@ -141,7 +155,18 @@ npm run audit
 npm run package
 ```
 
-`npm run package` creates the `.vsix` file in the workspace root.
+Individual steps:
+
+```bash
+npm run compile           # Clean and compile TypeScript into out/
+npm run watch             # Incremental compile
+npm run test:unit         # Unit, security, and metadata tests
+npm run test:integration  # VS Code Extension Host smoke test
+```
+
+`npm run check` compiles the extension, runs both suites, and lists the files that would ship in the VSIX. `npm run package` creates the `.vsix` file in the workspace root; it is ignored by git.
+
+Open the repository in VS Code and press `F5` to launch the **Run Extension** debug configuration, or pick **Extension Tests** to debug the smoke test.
 
 The repository includes unit tests, metadata and security checks, a VS Code Extension Host smoke test, dependency auditing, and CI coverage for Windows, macOS, and Linux.
 

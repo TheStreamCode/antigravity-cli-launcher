@@ -29,9 +29,11 @@ telemetry client, or wrapper around Antigravity authentication and networking.
 - `README.md`, `CHANGELOG.md`, `SECURITY.md`, `SUPPORT.md`, `TRADEMARKS.md`, and
   `CITATION.cff`: public documentation and release metadata.
 - `.github/workflows/ci.yml`: Windows, Ubuntu, and macOS validation matrix.
+- `.vscode/launch.json` and `.vscode/tasks.json`: contributor debug
+  configurations. They are excluded from the VSIX by `.vscodeignore`.
 
-`out/`, `.vscode-test/`, `node_modules/`, `.vsce/`, and `*.vsix` are generated or
-local artifacts. Do not edit or commit them.
+`out/`, `.vscode-test/`, `node_modules/`, `.vsce/`, `.antigravitycli/`, and
+`*.vsix` are generated or local artifacts. Do not edit or commit them.
 
 ## Toolchain And Setup
 
@@ -55,6 +57,10 @@ npm run check              # Full compile, tests, integration test, and package 
 npm run audit              # High-severity npm audit gate
 npm run package            # Build a local ignored VSIX
 ```
+
+Interactive debugging: open the repository in VS Code and press `F5` to start the
+**Run Extension** configuration, or select **Extension Tests** to debug the smoke
+test. Both configurations use the `npm: watch` background build task.
 
 Use `npm run check` as the default pre-handoff gate. Warnings emitted by the VS
 Code test host are not failures by themselves; use the process exit code and test
@@ -91,6 +97,10 @@ These behaviors are intentional and must not regress:
   Antigravity is absent.
 - Captured terminal output must remain bounded; long-running sessions must not
   cause unbounded memory growth. The current cap is 64 KiB.
+- Per-launch listeners must be bounded too. Every launch registers its
+  disposables locally and tears them down when the execution ends, when the
+  fallback path runs, or when its terminal closes. Do not push per-launch
+  listeners onto `context.subscriptions`, which is only drained on deactivate.
 - Do not add telemetry, analytics, personal-data collection, credential handling,
   or secret logging without an explicit product decision and corresponding
   security/privacy documentation.
@@ -148,15 +158,25 @@ For an authorized release:
 3. Move completed notes from `[Unreleased]` into the new `CHANGELOG.md` section.
 4. Run `npm ci`, `npm run audit`, and `npm run check`.
 5. Build the explicitly named VSIX and record its size and SHA-256.
-6. Commit only intended files, create an annotated `vX.Y.Z` tag, and push only
-   when authorized.
-7. Create the GitHub Release with the VSIX attached, then verify the remote asset
+6. Commit only intended files on a dedicated branch and open a pull request.
+   `main` is protected: it requires a pull request with one approving review, a
+   linear history, and passing `validate (windows-latest)` and
+   `validate (ubuntu-latest)` checks. Do not bypass those rules.
+7. After the pull request is merged, create an annotated `vX.Y.Z` tag on the
+   merged commit and push it.
+8. Create the GitHub Release with the VSIX attached, then verify the remote asset
    digest and all CI/CodeQL checks.
 
 Visual Studio Marketplace and Open VSX publication is performed by the repository
 owner. Do not attempt or claim those publications unless the owner explicitly
 delegates them. Read-only verification of the public versions and checksums is
 allowed when relevant.
+
+Publishing requires credentials that are not stored in this repository and are
+not configured as GitHub Actions secrets. `vsce publish` needs an Azure DevOps
+personal access token for the `mikesoft` publisher (`VSCE_PAT` or `vsce login`),
+and `ovsx publish` needs an Open VSX access token (`OVSX_PAT`). Never write these
+values into files, logs, commits, or summaries.
 
 ## Git And Handoff
 
