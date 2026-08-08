@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## 0.1.10 - 2026-08-08
+
 ### Changed
 
 - Added a dedicated CI smoke test for the minimum supported VS Code `1.103.0`, while retaining latest-stable coverage on Windows, macOS, and Linux.

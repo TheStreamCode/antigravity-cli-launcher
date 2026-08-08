@@ -44,7 +44,7 @@ test('package metadata is public-ready and clearly unofficial', () => {
   assert.equal(packageJson.displayName, 'Antigravity CLI Launcher — Run agy in a Side Terminal');
   assert.equal(packageJson.description, 'Launch the Antigravity (agy) AI coding agent in a side terminal from your editor toolbar — one click, fresh terminal, official setup guidance. Unofficial; works in VS Code, Cursor & Windsurf on Windows, macOS & Linux.');
   assert.equal(packageJson.publisher, 'mikesoft');
-  assert.equal(packageJson.version, '0.1.9');
+  assert.equal(packageJson.version, '0.1.10');
   assert.equal(packageJson.private, true);
   assert.equal(packageJson.icon, 'media/icon.png');
   assert.equal(packageJson.license, 'MIT');
@@ -135,10 +135,14 @@ test('legal and support documents are present and do not overclaim affiliation',
   assert.match(contributing, /Do not add official Google or Antigravity logos/i);
 });
 
-test('citation metadata matches the package version', () => {
+test('release metadata and public documentation match the package version', () => {
   const citation = readText('CITATION.cff');
+  const readme = readText('README.md');
+  const bugReport = readText('.github/ISSUE_TEMPLATE/bug_report.yml');
 
-  assert.match(citation, /^version: "0\.1\.9"$/m);
+  assert.match(citation, /^version: "0\.1\.10"$/m);
+  assert.match(readme, /Current documented release: `0\.1\.10`/);
+  assert.match(bugReport, /placeholder: 0\.1\.10/);
 });
 
 test('package scripts use deterministic local tooling entry points', () => {
