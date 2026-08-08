@@ -166,6 +166,8 @@ npm run test:integration  # VS Code Extension Host smoke test
 
 `npm run check` compiles the extension, runs both suites, and lists the files that would ship in the VSIX. `npm run package` creates the `.vsix` file in the workspace root; it is ignored by git.
 
+Set `VSCODE_TEST_VERSION` to an exact VS Code version before `npm run test:integration` when validating a compatibility floor. CI tests the latest stable editor on Windows, macOS, and Linux, plus the declared minimum VS Code `1.103.0` on Linux.
+
 Open the repository in VS Code and press `F5` to launch the **Run Extension** debug configuration, or pick **Extension Tests** to debug the smoke test.
 
 The repository includes unit tests, metadata and security checks, a VS Code Extension Host smoke test, dependency auditing, and CI coverage for Windows, macOS, and Linux.

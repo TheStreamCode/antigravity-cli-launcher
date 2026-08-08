@@ -153,12 +153,14 @@ test('package scripts use deterministic local tooling entry points', () => {
   assert.equal(packageJson.scripts['generate:icon'], undefined);
 });
 
-test('integration tests use isolated short-lived VS Code runtime paths', () => {
+test('integration tests use isolated runtime paths and support an explicit VS Code version', () => {
   const integrationRunner = readText('test/integration/runTest.js');
 
   assert.match(integrationRunner, /fs\.mkdtempSync\(path\.join\(os\.tmpdir\(\), 'agy-vscode-'\)\)/);
   assert.match(integrationRunner, /--user-data-dir=/);
   assert.match(integrationRunner, /--extensions-dir=/);
+  assert.match(integrationRunner, /process\.env\.VSCODE_TEST_VERSION\?\.trim\(\)/);
+  assert.match(integrationRunner, /vscodeVersion \? \{ version: vscodeVersion \} : \{\}/);
   assert.match(integrationRunner, /fs\.rmSync\(testRuntimePath, \{ recursive: true, force: true \}\)/);
 });
 
@@ -195,6 +197,9 @@ test('CI validates the extension with npm on Windows, macOS, and Linux', () => {
   assert.match(workflow, /npm ci/);
   assert.match(workflow, /npm run audit/);
   assert.match(workflow, /npm run check/);
+  assert.match(workflow, /compatibility-floor:/);
+  assert.match(workflow, /VSCODE_TEST_VERSION: '1\.103\.0'/);
+  assert.match(workflow, /xvfb-run -a npm run test:integration/);
   assert.match(workflow, /cancel-in-progress: true/);
   assert.ok(actionReferences.length > 0);
   assert.ok(actionReferences.every((reference) => /^[0-9a-f]{40}$/.test(reference)));
