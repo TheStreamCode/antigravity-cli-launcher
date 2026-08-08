@@ -41,7 +41,7 @@
 2. Install Antigravity CLI yourself from the [official Google installation guide](https://antigravity.google/docs/cli/install) and make sure `agy` works in an integrated terminal.
 3. Open a file or workspace and click the launcher button in the editor title bar.
 
-Current documented release: `0.1.10`. See [`CHANGELOG.md`](CHANGELOG.md) for release-by-release changes.
+Current documented release: `0.1.11`. See [`CHANGELOG.md`](CHANGELOG.md) for release-by-release changes.
 
 ## Features
 
