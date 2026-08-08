@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Added a dedicated CI smoke test for the minimum supported VS Code `1.103.0`, while retaining latest-stable coverage on Windows, macOS, and Linux.
+
+### Security
+
+- Refreshed locked transitive development dependencies to resolve high-severity advisories in `fast-uri`, `js-yaml`, and `undici`. The published extension continues to ship without runtime dependencies.
+
 ## 0.1.9 - 2026-08-01
 
 ### Fixed

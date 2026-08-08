@@ -52,3 +52,28 @@ jobs:
       - name: Run validation suite on macOS
         if: runner.os == 'macOS'
         run: npm run check
+
+  compatibility-floor:
+    name: compatibility floor (VS Code 1.103.0)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VSCODE_TEST_VERSION: '1.103.0'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test minimum supported VS Code
+        run: xvfb-run -a npm run test:integration

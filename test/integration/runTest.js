@@ -7,9 +7,11 @@ async function main() {
   const extensionDevelopmentPath = path.resolve(__dirname, '..', '..');
   const extensionTestsPath = path.resolve(__dirname, 'suite');
   const testRuntimePath = fs.mkdtempSync(path.join(os.tmpdir(), 'agy-vscode-'));
+  const vscodeVersion = process.env.VSCODE_TEST_VERSION?.trim();
 
   try {
     await runTests({
+      ...(vscodeVersion ? { version: vscodeVersion } : {}),
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs: [

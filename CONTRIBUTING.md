@@ -18,6 +18,8 @@ npm run audit
 
 Use `npm run test:unit` for the fast unit and metadata suite, and `npm run test:integration` for the VS Code Extension Host smoke test. `npm run check` compiles the extension, runs both suites, and inspects the VSIX file list.
 
+Set `VSCODE_TEST_VERSION` to an exact editor version before `npm run test:integration` to validate the compatibility floor. CI exercises the declared minimum VS Code version separately from the latest-stable operating-system matrix.
+
 To debug interactively, open the repository in VS Code and press `F5`. The **Run Extension** configuration starts an Extension Development Host with the `npm: watch` build task; **Extension Tests** runs the smoke test in the same host.
 
 ## Project Rules
