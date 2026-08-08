@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Redesigned the GitHub repository presentation with a concise product hero, clearer quick-start and download paths, trust-focused highlights, and an original social preview image.
+
 ## 0.1.10 - 2026-08-08
 
 ### Changed

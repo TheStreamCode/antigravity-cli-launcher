@@ -85,12 +85,15 @@ test('package contributes launcher commands, toolbar item, and machine-scoped co
 
 test('extension assets are original packaged assets on expected paths', () => {
   const marketplaceIcon = readPngSize('media/icon.png');
+  const socialPreview = readPngSize('.github/social-preview.png');
   const commandIcon = readText('media/launcher-mark.svg');
   const commandIconMarkup = stripEmbeddedImagePayloads(commandIcon);
   const commandIconBytes = fs.statSync(path.join(rootDir, 'media/launcher-mark.svg')).size;
 
   assert.equal(marketplaceIcon.width, 256);
   assert.equal(marketplaceIcon.height, 256);
+  assert.equal(socialPreview.width / socialPreview.height, 2);
+  assert.ok(fs.statSync(path.join(rootDir, '.github/social-preview.png')).size < 1_000_000);
   assert.ok(commandIconBytes <= 2_140_000, `Expected toolbar icon to stay within its optimized size budget, got ${commandIconBytes} bytes`);
   assert.match(commandIcon, /<svg/i);
   assert.equal((commandIcon.match(/data:image\/png;base64,/gi) ?? []).length, 2);
@@ -100,7 +103,10 @@ test('extension assets are original packaged assets on expected paths', () => {
 test('README covers user-directed setup, security behavior, privacy, and affiliation disclaimer', () => {
   const readme = readText('README.md');
 
-  assert.match(readme, /^# Antigravity CLI Launcher$/m);
+  assert.match(readme, /<h1 align="center">Antigravity CLI Launcher<\/h1>/);
+  assert.match(readme, /## Why This Launcher/);
+  assert.match(readme, /## Quick Start/);
+  assert.match(readme, /Latest VSIX/);
   assert.match(readme, /unofficial VS Code extension/i);
   assert.match(readme, /https:\/\/github\.com\/TheStreamCode\/antigravity-cli-launcher/);
   assert.match(readme, /VS Code 1\.103\.0 or newer/);

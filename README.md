@@ -1,24 +1,47 @@
-# Antigravity CLI Launcher
+<p align="center">
+  <img src="media/icon.png" width="128" height="128" alt="Antigravity CLI Launcher icon">
+</p>
 
-[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/mikesoft.vscode-antigravity-cli-launcher?label=Marketplace&color=6366F1)](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher)
-[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/mikesoft.vscode-antigravity-cli-launcher?color=0EA5E9)](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher)
-[![Open VSX](https://img.shields.io/open-vsx/v/mikesoft/vscode-antigravity-cli-launcher?label=Open%20VSX&color=a60ee5)](https://open-vsx.org/extension/mikesoft/vscode-antigravity-cli-launcher)
-[![CI](https://github.com/TheStreamCode/antigravity-cli-launcher/actions/workflows/ci.yml/badge.svg)](https://github.com/TheStreamCode/antigravity-cli-launcher/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Sponsor](https://img.shields.io/badge/Sponsor-TheStreamCode-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/TheStreamCode)
+<h1 align="center">Antigravity CLI Launcher</h1>
 
-Antigravity CLI Launcher is an unofficial VS Code extension that launches Antigravity CLI (`agy`) in a new side terminal directly from the editor toolbar.
+<p align="center">
+  <strong>One click. Fresh side terminal. <code>agy</code> ready.</strong><br>
+  A focused, unofficial VS Code extension that launches Antigravity CLI in VS Code, Cursor, and Windsurf on Windows, macOS, and Linux.
+</p>
 
-Works on Windows, macOS, and Linux.
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher"><img src="https://img.shields.io/visual-studio-marketplace/v/mikesoft.vscode-antigravity-cli-launcher?label=Marketplace&amp;color=6366F1" alt="Visual Studio Marketplace version"></a>
+  <a href="https://open-vsx.org/extension/mikesoft/vscode-antigravity-cli-launcher"><img src="https://img.shields.io/open-vsx/v/mikesoft/vscode-antigravity-cli-launcher?label=Open%20VSX&amp;color=a60ee5" alt="Open VSX version"></a>
+  <a href="https://github.com/TheStreamCode/antigravity-cli-launcher/actions/workflows/ci.yml"><img src="https://github.com/TheStreamCode/antigravity-cli-launcher/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2563EB.svg" alt="MIT License"></a>
+</p>
 
-Current documented release: `0.1.10`. See `CHANGELOG.md` for release-by-release changes.
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher"><strong>Visual Studio Marketplace</strong></a>
+  ·
+  <a href="https://open-vsx.org/extension/mikesoft/vscode-antigravity-cli-launcher"><strong>Open VSX</strong></a>
+  ·
+  <a href="https://github.com/TheStreamCode/antigravity-cli-launcher/releases/latest"><strong>Latest VSIX</strong></a>
+</p>
 
-Repository: https://github.com/TheStreamCode/antigravity-cli-launcher
+> **Independent and unofficial.** This extension is not affiliated with, endorsed by, sponsored by, or approved by Google. Installation and authentication remain under your control.
 
-> **✨ Want one launcher for every agent?** Try **[Super CLI](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-super-cli)** — a single sidebar that launches Claude Code, Codex, Copilot, Cursor, Grok, Kilo, Antigravity, OpenCode, and more. Install this launcher for Antigravity alone, or Super CLI for the whole set.
+## Why This Launcher
 
-> **Independent project disclaimer**
-> This extension is an independent, unofficial project. It is not affiliated with, endorsed by, sponsored by, or approved by Google. Antigravity, agy, Google, and related names, logos, and trademarks are property of their respective owners. This project does not include official Google or Antigravity logos.
+| Focus | What you get |
+| --- | --- |
+| **Fast** | Launch `agy` from the editor title bar into a fresh side terminal. |
+| **Workspace-aware** | Start in the active file's workspace, with a predictable fallback for multi-root windows. |
+| **Secure by default** | Block launches in untrusted workspaces and ignore workspace-controlled command overrides. |
+| **Private** | No telemetry, analytics, personal-data collection, installer downloads, or PATH changes. |
+
+## Quick Start
+
+1. Install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher), [Open VSX](https://open-vsx.org/extension/mikesoft/vscode-antigravity-cli-launcher), or the [latest GitHub Release](https://github.com/TheStreamCode/antigravity-cli-launcher/releases/latest).
+2. Install Antigravity CLI yourself from the [official Google installation guide](https://antigravity.google/docs/cli/install) and make sure `agy` works in an integrated terminal.
+3. Open a file or workspace and click the launcher button in the editor title bar.
+
+Current documented release: `0.1.10`. See [`CHANGELOG.md`](CHANGELOG.md) for release-by-release changes.
 
 ## Features
 
@@ -177,6 +200,14 @@ The repository includes unit tests, metadata and security checks, a VS Code Exte
 Open a GitHub issue for bugs and feature requests. For support details, see `SUPPORT.md`.
 
 Financial support for the independent maintainer is available through GitHub Sponsors: [github.com/sponsors/TheStreamCode](https://github.com/sponsors/TheStreamCode).
+
+## Related Project
+
+Need one launcher for several coding agents? **[Super CLI](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-super-cli)** provides a single sidebar for Claude Code, Codex, Copilot, Cursor, Grok, Kilo, Antigravity, OpenCode, and more.
+
+## Independent Project Notice
+
+This extension is an independent, unofficial project. It is not affiliated with, endorsed by, sponsored by, or approved by Google. Antigravity, agy, Google, and related names, logos, and trademarks are property of their respective owners. This project does not include official Google or Antigravity logos.
 
 ## License
 
