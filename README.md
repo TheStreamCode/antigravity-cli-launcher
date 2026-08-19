@@ -211,4 +211,4 @@ This extension is an independent, unofficial project. It is not affiliated with,
 
 ## License
 
-Released under the MIT License. See `LICENSE` for details.
+This project is licensed under the [MIT License](LICENSE).
