@@ -5,10 +5,7 @@
   "publisher": "mikesoft",
   "version": "0.1.11",
   "private": true,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TheStreamCode/antigravity-cli-launcher.git"
-  },
+  "repository": "github:TheStreamCode/antigravity-cli-launcher",
   "author": {
     "name": "Michael Gasperini",
     "url": "https://mikesoft.it"
@@ -16,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/TheStreamCode/antigravity-cli-launcher/issues"
   },
-  "homepage": "https://mikesoft.it",
+  "homepage": "https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher",
   "sponsor": {
     "url": "https://github.com/sponsors/TheStreamCode"
   },

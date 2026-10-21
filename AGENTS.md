@@ -154,7 +154,7 @@ For an authorized release:
 
 1. Choose a new immutable semantic version. Never move an already published tag.
 2. Synchronize the version in `package.json`, `package-lock.json`, `CITATION.cff`,
-   the README release line, issue-form placeholder, and metadata tests.
+   the issue-form placeholder, and metadata tests.
 3. Move completed notes from `[Unreleased]` into the new `CHANGELOG.md` section.
 4. Run `npm ci`, `npm run audit`, and `npm run check`.
 5. Build the explicitly named VSIX and record its size and SHA-256.

@@ -48,8 +48,9 @@ test('package metadata is public-ready and clearly unofficial', () => {
   assert.equal(packageJson.private, true);
   assert.equal(packageJson.icon, 'media/icon.png');
   assert.equal(packageJson.license, 'MIT');
-  assert.equal(packageJson.repository.url, 'https://github.com/TheStreamCode/antigravity-cli-launcher.git');
+  assert.equal(packageJson.repository, 'github:TheStreamCode/antigravity-cli-launcher');
   assert.equal(packageJson.bugs.url, 'https://github.com/TheStreamCode/antigravity-cli-launcher/issues');
+  assert.equal(packageJson.homepage, 'https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher');
   assert.equal(packageJson.engines.vscode, '^1.103.0');
   assert.equal(packageJson.engines.node, '>=22');
   assert.equal(packageJson.devDependencies['@types/vscode'], '1.103.0');
@@ -100,28 +101,41 @@ test('extension assets are original packaged assets on expected paths', () => {
   assert.doesNotMatch(commandIconMarkup, /google|gemini/i);
 });
 
-test('README covers user-directed setup, security behavior, privacy, and affiliation disclaimer', () => {
+test('README follows the shared section order and keeps setup, security, and privacy guidance', () => {
   const readme = readText('README.md');
+  const headings = [...readme.matchAll(/^## (.+)$/gm)].map((match) => match[1]);
 
-  assert.match(readme, /<h1 align="center">Antigravity CLI Launcher<\/h1>/);
-  assert.match(readme, /## Why This Launcher/);
-  assert.match(readme, /## Quick Start/);
-  assert.match(readme, /Latest VSIX/);
+  assert.match(readme, /^# Antigravity CLI Launcher$/m);
+  assert.deepEqual(headings, [
+    'Install',
+    'Quick start',
+    'Features',
+    'Requirements',
+    'Configuration',
+    'Privacy and security',
+    'Troubleshooting',
+    'Development',
+    'Support',
+    'Contributing',
+    'License',
+  ]);
+  assert.match(readme, /actions\/workflows\/ci\.yml\/badge\.svg/);
+  assert.match(readme, /License-MIT/);
+  assert.match(readme, /Maintained by \[Michael Gasperini \(Mikesoft\)\]\(https:\/\/mikesoft\.it\)/);
+  assert.match(readme, /latest VSIX/i);
   assert.match(readme, /unofficial VS Code extension/i);
   assert.match(readme, /https:\/\/github\.com\/TheStreamCode\/antigravity-cli-launcher/);
   assert.match(readme, /VS Code 1\.103\.0 or newer/);
   assert.match(readme, /not affiliated with, endorsed by, sponsored by, or approved by Google/i);
-  assert.match(readme, /Antigravity, agy, Google, and related names/i);
-  assert.match(readme, /## Features/);
-  assert.match(readme, /## Installation Guidance/);
+  assert.match(readme, /### The terminal opens but `agy` is not recognized/);
   assert.match(readme, /https:\/\/antigravity\.google\/docs\/cli\/install/);
-  assert.match(readme, /does not download installer scripts/i);
-  assert.match(readme, /marketplace scanner compatibility/i);
+  assert.match(readme, /does not download or execute installer content/i);
   assert.match(readme, /%LOCALAPPDATA%\\agy\\bin/);
   assert.match(readme, /\.local\/bin/);
   assert.match(readme, /entirely under the user's control/i);
   assert.match(readme, /does not collect telemetry, analytics, or personal data/i);
   assert.match(readme, /npm run check/);
+  assert.doesNotMatch(readme, /Current documented release/);
 });
 
 test('legal and support documents are present and do not overclaim affiliation', () => {
@@ -141,13 +155,15 @@ test('legal and support documents are present and do not overclaim affiliation',
   assert.match(contributing, /Do not add official Google or Antigravity logos/i);
 });
 
-test('release metadata and public documentation match the package version', () => {
+test('release metadata matches the latest published release', () => {
   const citation = readText('CITATION.cff');
   const readme = readText('README.md');
   const bugReport = readText('.github/ISSUE_TEMPLATE/bug_report.yml');
 
   assert.match(citation, /^version: "0\.1\.11"$/m);
-  assert.match(readme, /Current documented release: `0\.1\.11`/);
+  assert.match(citation, /^date-released: "2026-08-08"$/m);
+  assert.match(readme, /releases\/latest/);
+  assert.doesNotMatch(readme, /Current documented release/);
   assert.match(bugReport, /placeholder: 0\.1\.11/);
 });
 
