@@ -34,4 +34,3 @@ updates:
       # The @types/vscode major tracks the engine floor declared in package.json;
       # advancing the types ahead of the floor breaks the compatibility tests.
       - dependency-name: "@types/vscode"
-        update-types: ["version-update:semver-major"]
