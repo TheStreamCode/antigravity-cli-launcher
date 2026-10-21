@@ -1,214 +1,133 @@
+# Antigravity CLI Launcher
+
+Launch the Antigravity CLI (`agy`) in a fresh side terminal from the editor toolbar
+
+[![CI](https://github.com/TheStreamCode/antigravity-cli-launcher/actions/workflows/ci.yml/badge.svg)](https://github.com/TheStreamCode/antigravity-cli-launcher/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/mikesoft.vscode-antigravity-cli-launcher?label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher)
+
 <p align="center">
   <img src="media/icon.png" width="128" height="128" alt="Antigravity CLI Launcher icon">
 </p>
 
-<h1 align="center">Antigravity CLI Launcher</h1>
+Antigravity CLI Launcher is a small, unofficial VS Code extension for developers who already use Antigravity CLI and want a predictable one-click launcher inside the editor. It works in VS Code, Cursor, and Windsurf on Windows, macOS, and Linux wherever `agy` is available to the integrated terminal.
 
-<p align="center">
-  <strong>One click. Fresh side terminal. <code>agy</code> ready.</strong><br>
-  A focused, unofficial VS Code extension that launches Antigravity CLI in VS Code, Cursor, and Windsurf on Windows, macOS, and Linux.
-</p>
+> **Independent and unofficial.** This extension is not affiliated with, endorsed by, sponsored by, or approved by Google. Installation and authentication remain under your control. See [`TRADEMARKS.md`](TRADEMARKS.md) for the full notice.
 
-<p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher"><img src="https://img.shields.io/visual-studio-marketplace/v/mikesoft.vscode-antigravity-cli-launcher?label=Marketplace&amp;color=6366F1" alt="Visual Studio Marketplace version"></a>
-  <a href="https://open-vsx.org/extension/mikesoft/vscode-antigravity-cli-launcher"><img src="https://img.shields.io/open-vsx/v/mikesoft/vscode-antigravity-cli-launcher?label=Open%20VSX&amp;color=a60ee5" alt="Open VSX version"></a>
-  <a href="https://github.com/TheStreamCode/antigravity-cli-launcher/actions/workflows/ci.yml"><img src="https://github.com/TheStreamCode/antigravity-cli-launcher/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2563EB.svg" alt="MIT License"></a>
-</p>
+## Install
 
-<p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher"><strong>Visual Studio Marketplace</strong></a>
-  ·
-  <a href="https://open-vsx.org/extension/mikesoft/vscode-antigravity-cli-launcher"><strong>Open VSX</strong></a>
-  ·
-  <a href="https://github.com/TheStreamCode/antigravity-cli-launcher/releases/latest"><strong>Latest VSIX</strong></a>
-</p>
+Install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher), from [Open VSX](https://open-vsx.org/extension/mikesoft/vscode-antigravity-cli-launcher), or download the latest VSIX from [GitHub releases](https://github.com/TheStreamCode/antigravity-cli-launcher/releases/latest).
 
-> **Independent and unofficial.** This extension is not affiliated with, endorsed by, sponsored by, or approved by Google. Installation and authentication remain under your control.
+```bash
+code --install-extension mikesoft.vscode-antigravity-cli-launcher
+```
 
-## Why This Launcher
+Antigravity CLI itself is a separate product. Install it from the [official Google installation guide](https://antigravity.google/docs/cli/install), review the instructions before running any command, and confirm that `agy` works in an integrated terminal.
 
-| Focus | What you get |
-| --- | --- |
-| **Fast** | Launch `agy` from the editor title bar into a fresh side terminal. |
-| **Workspace-aware** | Start in the active file's workspace, with a predictable fallback for multi-root windows. |
-| **Secure by default** | Block launches in untrusted workspaces and ignore workspace-controlled command overrides. |
-| **Private** | No telemetry, analytics, personal-data collection, installer downloads, or PATH changes. |
+## Quick start
 
-## Quick Start
+1. Install Antigravity CLI and make sure `agy` runs in your integrated terminal.
+2. Install this extension and open a file or workspace.
+3. Trust the workspace and click the launcher button in the editor title bar.
 
-1. Install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-antigravity-cli-launcher), [Open VSX](https://open-vsx.org/extension/mikesoft/vscode-antigravity-cli-launcher), or the [latest GitHub Release](https://github.com/TheStreamCode/antigravity-cli-launcher/releases/latest).
-2. Install Antigravity CLI yourself from the [official Google installation guide](https://antigravity.google/docs/cli/install) and make sure `agy` works in an integrated terminal.
-3. Open a file or workspace and click the launcher button in the editor title bar.
-
-Current documented release: `0.1.11`. See [`CHANGELOG.md`](CHANGELOG.md) for release-by-release changes.
+Each click creates a new terminal beside the active editor and sends the configured command immediately. Existing terminals are not reused.
 
 ## Features
 
-- Adds a launcher button to the editor title toolbar
-- Opens a fresh side terminal beside the active editor on every launch
-- Uses the active editor workspace when available, with a fallback to the first open workspace folder
-- Runs the configurable Antigravity CLI command, defaulting to `agy`
-- Detects when the default `agy` command is missing and offers the official installation guide
-- Opens installation guidance in the external browser without downloading or executing installer content
-- Never changes PATH or shell profile files
-- Supports quoted Windows executable paths
-- Does not collect telemetry, analytics, or personal data
+- Launcher button in the editor title toolbar
+- A fresh side terminal for every launch
+- Active-editor workspace selection, with the first workspace folder as fallback
+- Configurable CLI command and terminal label
+- Missing-command guidance that opens Google's official installation page
+- Quoted Windows executable paths are preserved
+- No PATH edits, shell-profile changes, installer downloads, or background services
+- No telemetry, analytics, or personal data collection
 
 ## Requirements
 
-- VS Code 1.103.0 or newer
+- VS Code 1.103.0 or newer, or a compatible editor that provides the same extension API
 - Antigravity CLI installed by the user and available in the integrated terminal environment
-
-## Installation
-
-1. Install the extension from the VS Code Marketplace or from a local `.vsix` package.
-2. Open a workspace or file in VS Code.
-3. Click the Antigravity CLI Launcher button in the editor title toolbar.
-
-If Antigravity CLI is already installed and `agy` is on PATH, the launcher starts immediately.
-
-Install Antigravity CLI yourself by following the [official Google installation guide](https://antigravity.google/docs/cli/install). Review the instructions before running any command, then restart VS Code if new terminals do not recognize `agy`.
-
-## Installation Guidance
-
-When the default `agy` command is missing, the extension explains that installation is user-directed and offers **Open Installation Guide**. This opens Google's authoritative Antigravity CLI installation page in the external browser.
-
-For security and marketplace scanner compatibility, the extension does not download installer scripts, execute installation commands, create temporary installer files, change PATH, edit shell profiles, or rewrite the configured CLI command. Installation remains entirely under the user's control.
-
-## How It Works
-
-Each launch creates a new terminal beside the current editor and sends the configured command immediately. Existing terminals are not reused.
-
-When possible, the launcher opens the terminal in the workspace folder of the active editor. If the active editor is outside the workspace, it falls back to the first workspace folder in the current VS Code window.
-
-The launcher checks command availability through VS Code terminal shell integration, so detection follows the same environment used by the integrated terminal rather than the extension host process.
-
-For safety, the launcher is disabled in untrusted workspaces. The executable command is treated as machine-level user configuration and workspace-controlled command values are ignored, preventing a repository from changing the command that runs when you click the toolbar button.
 
 ## Configuration
 
-| Setting | Default | Description |
+| Setting | Purpose | Default |
 | --- | --- | --- |
-| `antigravityCliLauncher.cliCommand` | `agy` | Command executed when the launcher button is clicked. |
-| `antigravityCliLauncher.terminalName` | `Antigravity` | Base label used for created launch terminals. |
+| `antigravityCliLauncher.cliCommand` | Command executed when the launcher button is clicked. Machine-scoped; workspace values are ignored. | `agy` |
+| `antigravityCliLauncher.terminalName` | Base label used for created launch terminals. | `Antigravity` |
 
-`antigravityCliLauncher.cliCommand` is a machine-level setting. Configure it from your user or remote machine settings, not from repository workspace settings.
+Open the settings with **Antigravity CLI Launcher: Open Settings** from the Command Palette.
 
-Use the Command Palette to open the extension settings:
-
-- `Antigravity CLI Launcher: Open Settings`
-
-Examples:
-
-Default command:
-
-```json
-"antigravityCliLauncher.cliCommand": "agy"
-```
-
-Windows absolute executable path:
+A Windows executable path that contains spaces must be quoted:
 
 ```json
 "antigravityCliLauncher.cliCommand": "\"C:\\Users\\You\\AppData\\Local\\agy\\bin\\agy.exe\""
 ```
 
-macOS or Linux absolute executable path:
+A macOS or Linux absolute path:
 
 ```json
 "antigravityCliLauncher.cliCommand": "\"/Users/you/.local/bin/agy\""
 ```
 
+## Privacy and security
+
+The extension does not collect telemetry, analytics, or personal data. It launches commands in your local integrated terminal, and Antigravity CLI itself is a separate product with its own authentication, network access, and terms.
+
+Launching is disabled in untrusted workspaces. `antigravityCliLauncher.cliCommand` is a machine-level setting: the extension ignores workspace-controlled values, so a repository cannot change the command that runs when you click the toolbar button. The extension may open the official installation guide, but it does not download or execute installer content, create installer scripts, modify `PATH`, or edit shell profiles. Installation remains entirely under the user's control.
+
+See [`SECURITY.md`](SECURITY.md) for vulnerability reporting.
+
 ## Troubleshooting
 
 ### The terminal opens but `agy` is not recognized
 
-Follow the [official Google installation guide](https://antigravity.google/docs/cli/install), then restart VS Code so new terminal processes inherit any environment changes made during your user-directed setup.
+Follow the [official Google installation guide](https://antigravity.google/docs/cli/install), then restart VS Code so new terminal processes inherit environment changes made during setup.
 
-### Windows PATH was updated but PowerShell still cannot find `agy`
+### Windows PATH was updated but terminals still cannot find `agy`
 
-Confirm that `%LOCALAPPDATA%\agy\bin` is present in your user PATH. Restart VS Code and open a new terminal. Existing terminal sessions do not automatically reload Windows user environment changes.
+Confirm that `%LOCALAPPDATA%\agy\bin` is present in your user PATH. Restart VS Code and open a new terminal: existing terminal sessions do not reload Windows user environment changes.
 
 ### Nothing happens after clicking the button
 
-Check `antigravityCliLauncher.cliCommand` and verify that the same command works in a regular integrated terminal.
+Check `antigravityCliLauncher.cliCommand` and verify that the same command works in a regular integrated terminal. Confirm that the workspace is trusted.
 
 ### Custom executable path on Windows
 
-Quote executable paths that contain spaces. This is required for paths such as `"C:\Program Files\agy\agy.exe"`.
+Quote executable paths that contain spaces, for example `"C:\Program Files\agy\agy.exe"`.
 
 ### Multi-root workspaces
 
 The launcher prefers the workspace folder of the active editor. To control where Antigravity CLI starts in a multi-root window, open a file from the target workspace before clicking the toolbar button.
 
-## Privacy
-
-Antigravity CLI Launcher does not collect telemetry, analytics, or personal data.
-
-The extension launches commands in your local VS Code integrated terminal. Antigravity CLI itself is a separate product with its own behavior, authentication, network access, and terms.
-
-## Legal And Trademarks
-
-This repository contains only the extension code and original launcher assets. It does not include official Google or Antigravity logos.
-
-See `TRADEMARKS.md` for the full affiliation and trademark notice.
-
-## Repository Structure
-
-| Path | Purpose |
-| --- | --- |
-| `src/extension.ts` | Activation, commands, terminal lifecycle, and prompts. |
-| `src/command-utils.ts` | Editor-independent helpers: command parsing, configuration resolution, bounded output capture, missing-command detection. |
-| `test/*.test.js` | Unit, security, and repository-metadata tests. |
-| `test/integration/` | VS Code Extension Host smoke test and its runner. |
-| `media/` | Marketplace icon and editor-title launcher mark. |
-| `.github/workflows/ci.yml` | Windows, Linux, and macOS validation matrix. |
-| `out/` | Compiled JavaScript (generated, not tracked). |
-
 ## Development
 
 Requirements: Node.js 22 or newer and npm. The repository uses npm with the committed `package-lock.json`.
 
-Local verification and packaging:
-
 ```bash
+git clone https://github.com/TheStreamCode/antigravity-cli-launcher.git
+cd antigravity-cli-launcher
 npm ci
 npm run check
 npm run audit
-npm run package
 ```
 
-Individual steps:
-
-```bash
-npm run compile           # Clean and compile TypeScript into out/
-npm run watch             # Incremental compile
-npm run test:unit         # Unit, security, and metadata tests
-npm run test:integration  # VS Code Extension Host smoke test
-```
-
-`npm run check` compiles the extension, runs both suites, and lists the files that would ship in the VSIX. `npm run package` creates the `.vsix` file in the workspace root; it is ignored by git.
-
-Set `VSCODE_TEST_VERSION` to an exact VS Code version before `npm run test:integration` when validating a compatibility floor. CI tests the latest stable editor on Windows, macOS, and Linux, plus the declared minimum VS Code `1.103.0` on Linux.
-
-Open the repository in VS Code and press `F5` to launch the **Run Extension** debug configuration, or pick **Extension Tests** to debug the smoke test.
-
-The repository includes unit tests, metadata and security checks, a VS Code Extension Host smoke test, dependency auditing, and CI coverage for Windows, macOS, and Linux.
+`npm run check` compiles the extension, runs the unit, security, and metadata tests, executes the VS Code Extension Host smoke test, and lists the files that would ship in the VSIX. `npm run package` creates a local `.vsix` file. Set `VSCODE_TEST_VERSION` to an exact VS Code version before `npm run test:integration` to validate the compatibility floor.
 
 ## Support
 
-Open a GitHub issue for bugs and feature requests. For support details, see `SUPPORT.md`.
+Open a [GitHub issue](https://github.com/TheStreamCode/antigravity-cli-launcher/issues) for bugs and feature requests, or read [`SUPPORT.md`](SUPPORT.md) for the information to include. Maintenance can be supported through [GitHub Sponsors](https://github.com/sponsors/TheStreamCode).
 
-Financial support for the independent maintainer is available through GitHub Sponsors: [github.com/sponsors/TheStreamCode](https://github.com/sponsors/TheStreamCode).
+Looking for a single launcher for several coding agents? [Super CLI](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-super-cli) covers multiple agent CLIs from one sidebar.
 
-## Related Project
+## Contributing
 
-Need one launcher for several coding agents? **[Super CLI](https://marketplace.visualstudio.com/items?itemName=mikesoft.vscode-super-cli)** provides a single sidebar for Claude Code, Codex, Copilot, Cursor, Grok, Kilo, Antigravity, OpenCode, and more.
-
-## Independent Project Notice
-
-This extension is an independent, unofficial project. It is not affiliated with, endorsed by, sponsored by, or approved by Google. Antigravity, agy, Google, and related names, logos, and trademarks are property of their respective owners. This project does not include official Google or Antigravity logos.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md). Pull requests must pass the required CI checks.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+MIT License — see [`LICENSE`](LICENSE).
+
+---
+
+Maintained by [Michael Gasperini (Mikesoft)](https://mikesoft.it).
+If this project is useful to you, consider [sponsoring its maintenance](https://github.com/sponsors/TheStreamCode).
