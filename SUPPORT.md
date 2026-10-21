@@ -1,6 +1,6 @@
 # Support
 
-Use [GitHub Issues](https://github.com/TheStreamCode/antigravity-cli-launcher/issues) for reproducible bugs, compatibility problems, and feature requests.
+Use [GitHub Issues](https://github.com/TheStreamCode/antigravity-cli-launcher/issues) for reproducible bugs, compatibility problems, and feature requests. Usage questions and workflows belong in [GitHub Discussions](https://github.com/TheStreamCode/antigravity-cli-launcher/discussions).
 
 Please include:
 
