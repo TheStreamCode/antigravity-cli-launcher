@@ -168,15 +168,12 @@ For an authorized release:
    digest and all CI/CodeQL checks.
 
 Visual Studio Marketplace and Open VSX publication is performed by the repository
-owner. Do not attempt or claim those publications unless the owner explicitly
-delegates them. Read-only verification of the public versions and checksums is
-allowed when relevant.
-
-Publishing requires credentials that are not stored in this repository and are
-not configured as GitHub Actions secrets. `vsce publish` needs an Azure DevOps
-personal access token for the `mikesoft` publisher (`VSCE_PAT` or `vsce login`),
-and `ovsx publish` needs an Open VSX access token (`OVSX_PAT`). Never write these
-values into files, logs, commits, or summaries.
+owner. After the GitHub Release exists, dispatch the Release workflow with that
+tag: it publishes the released VSIX through OIDC trusted publishing, so no
+registry token is stored in the repository or in GitHub Actions secrets. Do not
+attempt or claim those publications unless the owner dispatches the workflow.
+Read-only verification of the public versions and checksums is allowed when
+relevant.
 
 ## Git And Handoff
 
