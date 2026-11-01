@@ -164,8 +164,8 @@ For an authorized release:
    `validate (ubuntu-latest)` checks. Do not bypass those rules.
 7. After the pull request is merged, create an annotated `vX.Y.Z` tag on the
    merged commit and push it.
-8. Create the GitHub Release with the VSIX attached, then verify the remote asset
-   digest and all CI/CodeQL checks.
+8. The tag push runs the Release workflow, which creates the GitHub Release with
+   the VSIX attached. Verify the remote asset digest and all CI/CodeQL checks.
 
 Visual Studio Marketplace and Open VSX publication is performed by the repository
 owner. After the GitHub Release exists, dispatch the Release workflow with that
